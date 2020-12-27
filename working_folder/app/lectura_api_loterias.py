@@ -83,12 +83,16 @@ def peticion_api(lista_str=None):
     for item in respuesta:
         for numero, premio in item.items():
             numero = numero
-            premio = premio
-        print(f'El número {numero} está premiado con  --> {premio} euros')
+            cantidad = premio['premio']
+            causa = premio['causa']
+            causa = str.replace(causa, '-', ', ')
+            if cantidad == '0':
+                print(f'El número {numero} no está premiado')
+            else:
+                print(f'El número {numero} está premiado con  --> {cantidad} euros y acumula los siguientes premios: {causa}')
     return respuesta
         
-    
-    
+
 if __name__ == '__main__':
     peticion_api()
 
