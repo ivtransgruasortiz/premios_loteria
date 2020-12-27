@@ -160,7 +160,7 @@ def api_loterias_bbdd(str_numeros):
             suma_premios.append(200)
             causa.append('Reintegro')
             
-        suma_premios = sum(suma_premios)
+        suma_premios = str(sum(suma_premios))
         causa = '-'.join(causa)
         
         dicc = {item:{'premio':suma_premios, 'causa':causa}}   
@@ -239,7 +239,7 @@ def api_loterias_csv(str_numeros):
             suma_premios.append(200)
             causa.append('Reintegro')
             
-        suma_premios = sum(suma_premios)
+        suma_premios = str(sum(suma_premios))
         causa = '-'.join(causa)
         
         dicc = {item:{'premio':suma_premios, 'causa':causa}}   
@@ -250,11 +250,12 @@ def api_loterias_csv(str_numeros):
 ###############################################################################################################
 #         INFINITY LOOP LISTENING TO PORT 80 (port=int("80")) TO THE OUTSIDE WORLD (host="0.0.0.0") - START   #
 ###############################################################################################################
+app.config['JSON_AS_ASCII'] = False
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
     app.run(
 	host="0.0.0.0",
-        port=int("5000")
+        port=int("5000") # Puerto "80" para pythonanywhere
     )
 ###############################################################################################################
 #         INFINITY LOOP LISTENING TO PORT 80 (port=int("80")) TO THE OUTSIDE WORLD (host="0.0.0.0") - END     #
