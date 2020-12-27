@@ -97,8 +97,8 @@ def loteria_scraping():
             
         df_listado = pd.DataFrame(listado, columns=['numero', 'premio']) 
         df_listado = df_listado[df_listado['numero'] != '--']
-        df_listado['numero'] = df_listado['numero'].astype('str')
-        df_listado.to_csv(f'{wd}listado_loteria.csv', index=False)
+        # df_listado['numero'] = df_listado['numero'].astype(str)
+        df_listado.to_csv(f'{wd}listado_loteria.csv', index=False, quotechar='"')
         print(f'Lectura correcta, los .csv están en el working_folder: {wd}')
     else:
         print('## No existe la pagina err400 ##')

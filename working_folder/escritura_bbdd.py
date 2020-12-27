@@ -85,7 +85,7 @@ def escritura_bbdd():
     
     for item in lista_ficheros:
         item_str = 'premios_records'
-        df = pd.read_csv(f'{item}')
+        df = pd.read_csv(f'{item}', dtype=str)
         df_json = df.to_json(orient="records")
         df_json = json.loads(df_json)
         exec('records = db.' + item_str)
