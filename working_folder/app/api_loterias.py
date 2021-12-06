@@ -80,7 +80,7 @@ else:
     sys.path.append(wd)
     sep = '/'
 
-lectura_bbdd = False
+lectura_bbdd = True
 
 if lectura_bbdd == True:
     ### Conexion a la bbdd 
@@ -250,15 +250,15 @@ def api_loterias_csv(str_numeros):
 ###############################################################################################################
 #         INFINITY LOOP LISTENING TO PORT 80 (port=int("80")) TO THE OUTSIDE WORLD (host="0.0.0.0") - START   #
 ###############################################################################################################
+
+
 app.config['JSON_AS_ASCII'] = False
 if __name__ == '__main__':
     app.config['JSON_AS_ASCII'] = False
     app.run(
-	host="0.0.0.0",
-        port=int("5000") # Puerto "80" para pythonanywhere
+        host="0.0.0.0",
+        port=int("5000")  # Puerto "80" para pythonanywhere
     )
 ###############################################################################################################
 #         INFINITY LOOP LISTENING TO PORT 80 (port=int("80")) TO THE OUTSIDE WORLD (host="0.0.0.0") - END     #
 ###############################################################################################################
-
-## END ##     
