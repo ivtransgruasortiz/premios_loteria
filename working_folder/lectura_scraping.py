@@ -75,7 +75,9 @@ def loteria_scraping():
 
     ### Conexion URL ###
     #
-    url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1113309102'
+    # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1113309102' ## 2020
+    url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1149809102' ## 2021
+
     html_doc = rq.get(url)
     statusCode = html_doc.status_code
     if statusCode == 200:
