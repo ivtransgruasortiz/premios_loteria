@@ -5,84 +5,59 @@ Created on Fri Dec 11 18:45:36 2020
 @author: iv
 """
 
-
-###############################
-## SELECT PLATFORM: ##########
-#############################    
-###-- WINDOWS OR LINUX --###
-###########################
 import sys
-if sys.platform == 'win32':
-    path = ''
-    print ('\n#### Windows System ####')
-    system = sys.platform
-else:
-    path = ''
-    print ('\n#### Linux System ####')
-    system = sys.platform
-
-print ('#####################################')
-print ('#####################################')
-print ('\n### Importing Libraries... ###')
-
 import os
 import pandas as pd
-import numpy as np
-import requests as rq
-import csv
 import json
 import glob
 import pymongo
-import dns
+import yaml
 
-#import time
-#import datetime
-#import pylab as pl
-#import seaborn as sns
-#import matplotlib as mpl
-#import matplotlib.pyplot as plt
-#import lxml
-#import urllib
-#import statsmodels
-#import sklearn
-#import nltk
-#import scipy
-#import tables
-#import json, hmac, hashlib, time, requests, base64
-#from requests.auth import AuthBase
-#import datetime as dt
-#import timeit
-#import math
-#from scipy import stats
-#import base64
-#import pyspark
-#from pyspark import SparkConf, SparkContext
-#from pyspark.sql import SparkSession
-#print(os.path.dirname(os.path.realpath(__file__)))
 
+### SYSTEM DATA ###
 if '__file__' in locals():
-    wd = os.path.dirname(__file__)
-    sys.path.append(wd)
-    sep = '/'
+    print('estamos en el aire')
+    try:
+        with open("config.yaml", "r") as stream:
+            auth_ddbb = yaml.safe_load(stream)
+            stream.close()
+        SECRET_USER = auth_ddbb["SECRET_USER"]
+        SECRET_PASS = auth_ddbb["SECRET_PASS"]
+    except:
+        SECRET_USER = os.getenv("SECRET_USER")
+        SECRET_PASS = os.getenv("SECRET_PASS")
+    if locals()['__file__'] == '<input>':
+        wd = os.path.split(os.path.realpath(__file__))[0]
+        wd += '/'
+        sys.path.append(wd)
+        os.chdir(wd)
+        del locals()['__file__']
+    else:
+        wd = os.path.dirname(__file__)
+        wd += '/'
+        sys.path.append(wd)
+        os.chdir(wd)
 else:
-    wd = os.path.abspath('./Documents/Repositorio_Iv/premios_loteria/working_folder/')
-    wd = wd + '/'
+    wd = os.path.abspath("./working_folder/")
+    wd += '/'
     sys.path.append(wd)
-    sep = '/'
+    with open("config.yaml", "r") as stream:
+        auth_ddbb = yaml.safe_load(stream)
+        stream.close()
+    SECRET_USER = auth_ddbb["SECRET_USER"]
+    SECRET_PASS = auth_ddbb["SECRET_PASS"]
 
-def escritura_bbdd(): 
-    ### Obtenemos lista de ficheros ###
-    #
-    lista_ficheros = glob.glob(wd + '*.csv')
-    
-    ### Conexion a la bbdd 
-    # 
-    user = 'ivan_1'
-    password = 'mantga43'
+#ConexionBBDD
+conexion_bbdd = True
+if conexion_bbdd:
     dabase_name = 'loteria_navidad_db'
-    client = pymongo.MongoClient("mongodb+srv://%s:%s@cluster0.vsp3s.mongodb.net/%s?retryWrites=true&w=majority" %(user, password, dabase_name))
+    client = pymongo.MongoClient("mongodb+srv://%s:%s@cluster0.vsp3s.mongodb.net/%s?retryWrites=true&w=majority"
+                                 % (SECRET_USER, SECRET_PASS, dabase_name))
     db = client.get_database(dabase_name)
-    
+
+
+def escritura_bbdd():
+    lista_ficheros = glob.glob(wd + '*.csv')
     for item in lista_ficheros:
         item_str = 'premios_records'
         df = pd.read_csv(f'{item}', dtype=str)
@@ -94,7 +69,6 @@ def escritura_bbdd():
     print('Se han leído los .csv y se han subido como documentos a la base de datos MongoDB Atlas')
     return
 
+
 if __name__ == '__main__':
     escritura_bbdd()
-
-## END ##

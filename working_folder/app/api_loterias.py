@@ -5,60 +5,15 @@ Created on Sat Dec 12 17:41:19 2020
 @author: iv
 """
 
-
-###############################
-## SELECT PLATFORM: ##########
-#############################    
-###-- WINDOWS OR LINUX --###
-###########################
 import sys
-if sys.platform == 'win32':
-    path = ''
-    print ('\n#### Windows System ####')
-    system = sys.platform
-else:
-    path = ''
-    print ('\n#### Linux System ####')
-    system = sys.platform
-
-print ('#####################################')
-print ('#####################################')
-print ('\n### Importing Libraries... ###')
-
 import os
 import pandas as pd
-import numpy as np
-import requests as rq
-import csv
 import json
 import glob
 import pymongo
-from flask import Flask, request, render_template, jsonify
+from flask import Flask, jsonify
+import yaml
 
-#import time
-#import datetime
-#import pylab as pl
-#import seaborn as sns
-#import matplotlib as mpl
-#import matplotlib.pyplot as plt
-#import lxml
-#import urllib
-#import statsmodels
-#import sklearn
-#import nltk
-#import scipy
-#import tables
-#import json, hmac, hashlib, time, requests, base64
-#from requests.auth import AuthBase
-#import datetime as dt
-#import timeit
-#import math
-#from scipy import stats
-#import base64
-#import pyspark
-#from pyspark import SparkConf, SparkContext
-#from pyspark.sql import SparkSession
-#print(os.path.dirname(os.path.realpath(__file__)))
 
 print('\n')
 print('Poner en el navegador "http://localhost:5000/api/v1/premios/bbdd/<numero1-numero2-...etc> or http://localhost:5000/api/v1/premios/csv/<numero1-numero2-...etc>" donde los numeros van separados por guiones')
@@ -68,27 +23,45 @@ print('Pulsar ctrl+c para cancelar')
 print('\n')
 
 
+### SYSTEM DATA ###
 if '__file__' in locals():
-    wd = os.path.dirname(__file__)
-    wd = wd + '/'
-    sys.path.append(wd)
-    sep = '/'
+    print('estamos en el aire')
+    try:
+        with open("config.yaml", "r") as stream:
+            auth_ddbb = yaml.safe_load(stream)
+            stream.close()
+        SECRET_USER = auth_ddbb["SECRET_USER"]
+        SECRET_PASS = auth_ddbb["SECRET_PASS"]
+    except:
+        SECRET_USER = os.getenv("SECRET_USER")
+        SECRET_PASS = os.getenv("SECRET_PASS")
+    if locals()['__file__'] == '<input>':
+        wd = os.path.split(os.path.realpath(__file__))[0]
+        wd += '/'
+        sys.path.append(wd)
+        os.chdir(wd)
+        del locals()['__file__']
+    else:
+        wd = os.path.dirname(__file__)
+        wd += '/'
+        sys.path.append(wd)
+        os.chdir(wd)
 else:
-    wd = os.path.abspath('./Documents/Repositorio_Iv/premios_loteria/working_folder/app/')
-    wd = os.path.abspath(os.path.join(wd, os.pardir))
-    wd = wd + '/'
+    wd = os.path.abspath("./working_folder/app/")
+    wd += '/'
     sys.path.append(wd)
-    sep = '/'
+    with open("config.yaml", "r") as stream:
+        auth_ddbb = yaml.safe_load(stream)
+        stream.close()
+    SECRET_USER = auth_ddbb["SECRET_USER"]
+    SECRET_PASS = auth_ddbb["SECRET_PASS"]
 
-lectura_bbdd = True
-
-if lectura_bbdd == True:
-    ### Conexion a la bbdd 
-    # 
-    user = 'ivan_1'
-    password = 'mantga43'
+#ConexionBBDD
+conexion_bbdd = True
+if conexion_bbdd:
     dabase_name = 'loteria_navidad_db'
-    client = pymongo.MongoClient("mongodb+srv://%s:%s@cluster0.vsp3s.mongodb.net/%s?retryWrites=true&w=majority" %(user, password, dabase_name))
+    client = pymongo.MongoClient("mongodb+srv://%s:%s@cluster0.vsp3s.mongodb.net/%s?retryWrites=true&w=majority"
+                                 % (SECRET_USER, SECRET_PASS, dabase_name))
     db = client.get_database(dabase_name)
 
 ## Creacion de la app

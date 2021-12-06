@@ -5,64 +5,30 @@ Created on Fri Dec 11 16:30:40 2020
 @author: iv
 """
 
-###############################
-## SELECT PLATFORM: ##########
-#############################    
-###-- WINDOWS OR LINUX --###
-###########################
-import sys
-if sys.platform == 'win32':
-    path = ''
-    print ('\n#### Windows System ####')
-    system = sys.platform
-else:
-    path = ''
-    print ('\n#### Linux System ####')
-    system = sys.platform
-
-print ('#####################################')
-print ('#####################################')
-print ('\n### Importing Libraries... ###')
 
 import os
 import sys
 import pandas as pd
 import requests as rq
-import json
 from bs4 import BeautifulSoup
 
-#import numpy as np
-#import csv
-#import time
-#import datetime
-#import pylab as pl
-#import seaborn as sns
-#import matplotlib as mpl
-#import matplotlib.pyplot as plt
-#import lxml
-#import urllib
-#import statsmodels
-#import sklearn
-#import nltk
-#import scipy
-#import tables
-#import json, hmac, hashlib, time, requests, base64
-#from requests.auth import AuthBase
-#import datetime as dt
-#import timeit
-#import math
-#from scipy import stats
-#import base64
-#import pyspark
-#from pyspark import SparkConf, SparkContext
-#from pyspark.sql import SparkSession
 
+### SYSTEM DATA ###
 if '__file__' in locals():
-    wd = os.path.dirname(__file__)
-    sys.path.append(wd)
+    if locals()['__file__'] == '<input>':
+        wd = os.path.split(os.path.realpath(__file__))[0]
+        wd += '/'
+        sys.path.append(wd)
+        os.chdir(wd)
+        del locals()['__file__']
+    else:
+        wd = os.path.dirname(__file__)
+        wd += '/'
+        sys.path.append(wd)
+        os.chdir(wd)
 else:
     wd = os.path.abspath("./Documents/Repositorio_Iv/premios_loteria/working_folder/")
-    wd = wd + '/'
+    wd += '/'
     sys.path.append(wd)
 
 def loteria_scraping():

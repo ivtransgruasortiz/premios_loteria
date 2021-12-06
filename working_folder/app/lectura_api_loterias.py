@@ -30,11 +30,6 @@ else:
     wd += '/'
     sys.path.append(wd)
 
-if sys.platform == 'win32':
-    system = sys.platform
-else:
-    system = sys.platform
-
 
 def peticion_api(lista_str=None):
     url = 'http://localhost:5000/api/v1/premios/bbdd/'

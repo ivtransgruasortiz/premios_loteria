@@ -6,3 +6,5 @@ numpy
 pandas
 bs4
 flask
+python-dotenv>=0.8
+PyYAML>=5.4
