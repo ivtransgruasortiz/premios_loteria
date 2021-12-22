@@ -42,7 +42,8 @@ def loteria_scraping():
     ### Conexion URL ###
     #
     # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1113309102' ## 2020
-    url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1149809102' ## 2021
+    # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1149809102' ## 2021
+    url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres.provisional'  ## 2021
 
     html_doc = rq.get(url)
     statusCode = html_doc.status_code
@@ -55,13 +56,13 @@ def loteria_scraping():
         for entrada in entradas:
             numero = entrada.find('p').getText()
             premio = entrada.find('span').getText()
-            listado.append([numero, premio])
+            listado.append([numero.strip(), premio.strip()])
             
         entradas = soup.find_all('tr', {'class': 'impar'})
         for entrada in entradas:
             numero = entrada.find('p').getText()
             premio = entrada.find('span').getText()
-            listado.append([numero, premio])
+            listado.append([numero.strip(), premio.strip()])
             
         df_listado = pd.DataFrame(listado, columns=['numero', 'premio']) 
         df_listado = df_listado[df_listado['numero'] != '--']

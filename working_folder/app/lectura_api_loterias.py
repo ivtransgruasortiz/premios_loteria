@@ -32,7 +32,8 @@ else:
 
 
 def peticion_api(lista_str=None):
-    url = 'http://localhost:5000/api/v1/premios/bbdd/'
+    # url = 'http://localhost:5000/api/v1/premios/bbdd/'
+    url = 'http://localhost:5000/api/v1/premios/csv/'
     # url = 'http://iv36.pythonanywhere.com/api/v1/premios/csv/'
     if lista_str is None:
         lista_str = input('Dame la lista de numeros a comprobar separados por guiones sin espacios: ')
