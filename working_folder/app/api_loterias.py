@@ -146,7 +146,7 @@ def api_loterias_bbdd(str_numeros):
 def api_loterias_csv(str_numeros):
     lista_numeros = str_numeros.split('-')
     lista_ficheros = glob.glob(wd + '*.csv')
-    
+    df = pd.DataFrame()
     for item in lista_ficheros:
         df = pd.read_csv(item, dtype=str)
         
