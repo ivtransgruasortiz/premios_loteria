@@ -4,3 +4,8 @@
 
 # Dynamic plugins .dll
 bin/
+/listado_loteria.csv
+/config.yaml
+.idea
+/.venv
+.venv
