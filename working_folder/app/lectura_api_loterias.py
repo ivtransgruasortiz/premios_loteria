@@ -12,7 +12,7 @@ import pandas as pd
 import requests as rq
 
 
-### SYSTEM DATA ###
+# SYSTEM DATA ###
 if '__file__' in locals():
     if locals()['__file__'] == '<input>':
         wd = os.path.split(os.path.realpath(__file__))[0]
@@ -54,8 +54,12 @@ def peticion_api(lista_str=None):
     return respuesta
 
 
-lista_str = '-'.join([str(x) for x in pd.read_csv(wd + 'numeros_jugados.csv')['numeros_jugados'].tolist()])
+lista_str = [x for x in pd.read_csv(wd + 'numeros_jugados.csv', dtype=object)['numeros_jugados']]
+lista_str.append('2')  # PRUEBA
+lista_str = '-'.join(['0'*(5-len(x)) + x if len(x) < 5 else x for x in lista_str])
 
+# lista_str = '-'.join([str(x) for x in pd.read_csv(wd + 'numeros_jugados.csv', dtype=object)['numeros_jugados']
+#                      .tolist()])  # OLD
 
 if __name__ == '__main__':
     peticion_api(lista_str)
