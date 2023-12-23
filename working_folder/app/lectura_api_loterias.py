@@ -10,6 +10,8 @@ import os
 import pandas as pd
 import requests as rq
 
+from working_folder.app.functions import api_loterias_csv_local
+
 # SYSTEM DATA ###
 if '__file__' in locals():
     if locals()['__file__'] == '<input>':
@@ -38,7 +40,27 @@ def peticion_api(lista_str=None):
         respuesta = rq.get(url + f'{lista_str}').json()
     else:
         respuesta = rq.get(url + f'{lista_str}').json()
-    # print(respuesta)
+    for item in respuesta:
+        for numero, premio in item.items():
+            numero = numero
+            cantidad = premio['premio']
+            causa = premio['causa']
+            causa = str.replace(causa, '-', ', ')
+            if cantidad == '0':
+                print(f'El número {numero} no está premiado')
+            else:
+                print(
+                    f'El número {numero} está premiado con  --> {cantidad} euros a la serie ({int(int(cantidad) / 10)} '
+                    f'euros al décimo) y acumula los siguientes premios: {causa}')
+    return respuesta
+
+
+def peticion_csv_file(lista_str=None):
+    if lista_str is None:
+        lista_str = input('Dame la lista de numeros a comprobar separados por guiones sin espacios: ')
+        respuesta = api_loterias_csv_local(lista_str)
+    else:
+        respuesta = api_loterias_csv_local(lista_str)
     for item in respuesta:
         for numero, premio in item.items():
             numero = numero
@@ -56,11 +78,20 @@ def peticion_api(lista_str=None):
 
 name_csv = 'numeros_jugados.csv'
 lista_str = [x for x in pd.read_csv(wd + name_csv, dtype=object)['numeros_jugados']]
-lista_str.append('2')  # PRUEBA
-lista_str = '-'.join(['0' * (5 - len(x)) + x if len(x) < 5 else x for x in lista_str])
-
-# lista_str = '-'.join([str(x) for x in pd.read_csv(wd + 'numeros_jugados.csv', dtype=object)['numeros_jugados']
-#                      .tolist()])  # OLD
+# lista_str.append('2')  # PRUEBA
+# lista_str = '-'.join(['0' * (5 - len(x)) + x if len(x) < 5 else x for x in lista_str])
+lista_str = '-'.join([f"{int(x):05}" for x in lista_str])
 
 if __name__ == '__main__':
-    peticion_api(lista_str)
+    valid = True
+    while valid:
+        remote = input("Ejecución online?? Y/N: ")
+        if remote.lower() == "y":
+            peticion_api(lista_str)
+            valid = False
+        elif remote.lower() == "n":
+            peticion_csv_file(lista_str)
+            valid = False
+        else:
+            print("No es una seleccion válida...")
+            valid = True

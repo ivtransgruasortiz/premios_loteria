@@ -38,38 +38,35 @@ def loteria_scraping():
     los .csv correspondientes en la carpeta "working_folder"
     """
 
-    ### Conexion URL ###
+    # # Conexion URL ###
     #
     # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1113309102' # 2020
     # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1149809102' # 2021
     # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres.provisional'  # 2021
     # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1149809102'  # 2021
-    url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1186309102'  # 2022
-
+    # url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1186309102'  # 2022
+    url = 'https://www.loteriasyapuestas.es/es/loteria-nacional/tablas-y-alambres?drawId=1222809102'  # 2023
     html_doc = rq.get(url)
     statusCode = html_doc.status_code
     if statusCode == 200:
         soup = BeautifulSoup(html_doc.text, 'html.parser')
         # print(soup.prettify())
         listado = []
-
         entradas = soup.find_all('tr', {'class': 'par'})
         for entrada in entradas:
             numero = entrada.find('p').getText()
             premio = entrada.find('span').getText()
             listado.append([numero.strip(), premio.strip()])
-
         entradas = soup.find_all('tr', {'class': 'impar'})
         for entrada in entradas:
             numero = entrada.find('p').getText()
             premio = entrada.find('span').getText()
             listado.append([numero.strip(), premio.strip()])
-
         df_listado = pd.DataFrame(listado, columns=['numero', 'premio'])
         df_listado = df_listado[df_listado['numero'] != '--']
-        # df_listado['numero'] = df_listado['numero'].astype(str)
-        df_listado.to_csv(f'{wd}listado_loteria.csv', index=False, quotechar='"')
-        print(f'Lectura correcta, los .csv están en el working_folder: {wd}')
+        # df_listado.to_csv(f'{wd}listado_loteria.csv', index=False, quotechar='"')
+        df_listado.to_csv(f'{wd}working_folder/app/listado_loteria.csv', index=False, quotechar='"')
+        print(f'Lectura correcta, los .csv están en el working_folder: {wd}listado_loteria.csv')
     else:
         print('## No existe la pagina err400 ##')
         pass

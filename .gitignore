@@ -5,6 +5,9 @@
 # Dynamic plugins .dll
 bin/
 /listado_loteria.csv
+/numeros_jugados.csv
+/working_folder/app/listado_loteria.csv
+/working_folder/app/numeros_jugados.csv
 /config.yaml
 .idea
 /.venv
