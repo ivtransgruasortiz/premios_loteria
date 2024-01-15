@@ -12,3 +12,4 @@ bin/
 .idea
 /.venv
 .venv
+.env
